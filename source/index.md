@@ -48,7 +48,7 @@ You must replace `myaccesstoken` with your access token.
 ## Get All Reminders
 
 ```shell
-curl "http://followup.cc/api/v1/reminders.json"
+curl "https://followup.cc/api/v1/reminders.json"
   -H "Authorization: myaccesstoken"
 ```
 
@@ -59,7 +59,7 @@ curl "http://followup.cc/api/v1/reminders.json"
   {
     "id": 1,
     "subject": "Here's a test reminder",
-    "action_address": "1minute@gotit.io",
+    "action_address": "1minute@followup.cc",
     "action_method": "to",
     "send_reminder_to": "stuartchaney22@gmail.com",
     "in_reply_to": nil,
@@ -121,7 +121,7 @@ curl "https://followup.cc/api/v1/reminders/<ID>.json?access_token=myaccesstoken"
 {
   "id": 1,
   "subject": "Here's a test reminder",
-  "action_address": "1minute@gotit.io",
+  "action_address": "1minute@followup.cc",
   "action_method": "to",
   "send_reminder_to": "stuartchaney22@gmail.com",
   "in_reply_to": nil,
@@ -153,7 +153,7 @@ ID | The ID of the reminder to retrieve
 ## Create a Reminder
 
 ```shell
-curl "http://followup.cc/api/v1/reminders.json"
+curl "https://followup.cc/api/v1/reminders.json"
   -H "Authorization: myaccesstoken"
 ```
 
@@ -163,7 +163,7 @@ curl "http://followup.cc/api/v1/reminders.json"
   {
     "id": 1,
     "subject": "Here's a test reminder",
-    "action_address": "1minute@gotit.io",
+    "action_address": "1minute@followup.cc",
     "action_method": "to",
     "send_reminder_to": "stuartchaney22@gmail.com",
     "in_reply_to": nil,
@@ -199,7 +199,7 @@ from | true | Which email you want to send the reminder from.
 ## Reschedule a Reminder
 
 ```shell
-curl "http://followup.cc/api/v1/reminders/1/reschedule.json"
+curl "https://followup.cc/api/v1/reminders/1/reschedule.json"
   -H "Authorization: myaccesstoken"
 ```
 
@@ -209,7 +209,7 @@ curl "http://followup.cc/api/v1/reminders/1/reschedule.json"
   {
     "id": 1,
     "subject": "Here's a test reminder",
-    "action_address": "1minute@gotit.io",
+    "action_address": "1minute@followup.cc",
     "action_method": "to",
     "send_reminder_to": "stuartchaney22@gmail.com",
     "in_reply_to": nil,
@@ -238,3 +238,174 @@ This endpoint creates a reminder associated with your account.
 Parameter | Default | Description
 --------- | ------- | -----------
 starts_at | true | The time the reminder will send as a UTC Unix timestamp.
+
+
+## Update a Reminder's Recipient
+
+```shell
+curl "https://followup.cc/api/v1/reminders/1/update_recipient.json"
+  -H "Authorization: myaccesstoken"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+  {
+    "id": 1,
+    "subject": "Here's a test reminder",
+    "action_address": "1minute@followup.cc",
+    "action_method": "to",
+    "send_reminder_to": "stuartchaney22@gmail.com",
+    "in_reply_to": nil,
+    "responded_to": false,
+    "is_recurring": false,
+    "repeat_interval": nil,
+    "header_created_at": 1391326015,
+    "was_scheduled_at": 1403978619,
+    "starts_at": 1403978431,
+    "cancelled_at": 1403979558,
+    "expired_at": 1403979574,
+    "user_email_id": 34,
+    "user_email": "stuartchaney22@gmail.com"
+  }
+]
+```
+
+This endpoint updates the recipient of the reminder.
+
+### HTTP Request
+
+`PUT https://followup.cc/api/v1/reminders/<ID>/update_recipient.json?access_token=myaccesstoken`
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+email | true | The email address of the new recipient.
+
+
+## Send the Reminder Now
+
+```shell
+curl "https://followup.cc/api/v1/reminders/1/send_now.json"
+  -H "Authorization: myaccesstoken"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+  {
+    "id": 1,
+    "subject": "Here's a test reminder",
+    "action_address": "1minute@followup.cc",
+    "action_method": "to",
+    "send_reminder_to": "stuartchaney22@gmail.com",
+    "in_reply_to": nil,
+    "responded_to": false,
+    "is_recurring": false,
+    "repeat_interval": nil,
+    "header_created_at": 1391326015,
+    "was_scheduled_at": 1403978619,
+    "starts_at": 1403978431,
+    "cancelled_at": 1403979558,
+    "expired_at": 1403979574,
+    "user_email_id": 34,
+    "user_email": "stuartchaney22@gmail.com"
+  }
+]
+```
+
+This endpoint sends the reminder straight away and also has the option
+to cancel it too.
+
+### HTTP Request
+
+`PUT https://followup.cc/api/v1/reminders/<ID>/send_now.json?cancel=true&access_token=myaccesstoken`
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+cancel | false | a boolean field which indicates whether you would like to cancel the reminder at the time of sending.
+
+## Snooze a Reminder
+
+```shell
+curl
+"https://followup.cc/api/v1/reminders/1/snooze.json?seconds=60&access_token=blah"
+  -H "Authorization: myaccesstoken"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+  {
+    "id": 1,
+    "subject": "Here's a test reminder",
+    "action_address": "1minute@followup.cc",
+    "action_method": "to",
+    "send_reminder_to": "stuartchaney22@gmail.com",
+    "in_reply_to": nil,
+    "responded_to": false,
+    "is_recurring": false,
+    "repeat_interval": nil,
+    "header_created_at": 1391326015,
+    "was_scheduled_at": 1403978619,
+    "starts_at": 1403978431,
+    "cancelled_at": 1403979558,
+    "expired_at": 1403979574,
+    "user_email_id": 34,
+    "user_email": "stuartchaney22@gmail.com"
+  }
+]
+```
+
+This endpoint snoozes a reminder for a given time period.
+
+### HTTP Request
+
+`PUT https://followup.cc/api/v1/reminders/<ID>/snooze.json?seconds=60&access_token=myaccesstoken`
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+seconds | 0 | an integer representing how many seconds you would like the reminder snoozed for.
+
+## Cancel a Reminder
+
+```shell
+curl
+"https://followup.cc/api/v1/reminders/1.json?access_token=blah"
+  -H "Authorization: myaccesstoken"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+  {
+    "id": 1,
+    "subject": "Here's a test reminder",
+    "action_address": "1minute@followup.cc",
+    "action_method": "to",
+    "send_reminder_to": "stuartchaney22@gmail.com",
+    "in_reply_to": nil,
+    "responded_to": false,
+    "is_recurring": false,
+    "repeat_interval": nil,
+    "header_created_at": 1391326015,
+    "was_scheduled_at": 1403978619,
+    "starts_at": 1403978431,
+    "cancelled_at": 1403979558,
+    "expired_at": 1403979574,
+    "user_email_id": 34,
+    "user_email": "stuartchaney22@gmail.com"
+  }
+]
+```
+
+This endpoint cancels the remidner.
+
+### HTTP Request
+
+`PUT https://followup.cc/api/v1/reminders/<ID>.json?access_token=myaccesstoken`
