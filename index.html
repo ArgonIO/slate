@@ -68,7 +68,7 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 <h1 id="reminders">Reminders</h1>
 
 <h2 id="get-all-reminders">Get All Reminders</h2>
-<pre class="highlight shell">curl <span class="s2">"http://followup.cc/api/v1/reminders.json"</span>
+<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders.json"</span>
   -H <span class="s2">"Authorization: myaccesstoken"</span>
 </pre>
 
@@ -79,7 +79,7 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
   </span><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
     </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@gotit.io"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
@@ -153,7 +153,7 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 <pre class="highlight json"><span class="p">{</span><span class="w">
   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@gotit.io"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
@@ -191,7 +191,7 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 </tbody></table>
 
 <h2 id="create-a-reminder">Create a Reminder</h2>
-<pre class="highlight shell">curl <span class="s2">"http://followup.cc/api/v1/reminders.json"</span>
+<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders.json"</span>
   -H <span class="s2">"Authorization: myaccesstoken"</span>
 </pre>
 
@@ -201,7 +201,7 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 <pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
     </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@gotit.io"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
@@ -257,7 +257,7 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 </tbody></table>
 
 <h2 id="reschedule-a-reminder">Reschedule a Reminder</h2>
-<pre class="highlight shell">curl <span class="s2">"http://followup.cc/api/v1/reminders/1/reschedule.json"</span>
+<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders/1/reschedule.json"</span>
   -H <span class="s2">"Authorization: myaccesstoken"</span>
 </pre>
 
@@ -267,7 +267,7 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 <pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
     </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@gotit.io"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
@@ -306,6 +306,197 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 <td>The time the reminder will send as a UTC Unix timestamp.</td>
 </tr>
 </tbody></table>
+
+<h2 id="update-a-reminder&#39;s-recipient">Update a Reminder&rsquo;s Recipient</h2>
+<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders/1/update_recipient.json"</span>
+  -H <span class="s2">"Authorization: myaccesstoken"</span>
+</pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="err">]</span><span class="w">
+</span></pre>
+
+<p>This endpoint updates the recipient of the reminder.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;/update_recipient.json?access_token=myaccesstoken</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>true</td>
+<td>The email address of the new recipient.</td>
+</tr>
+</tbody></table>
+
+<h2 id="send-the-reminder-now">Send the Reminder Now</h2>
+<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders/1/send_now.json"</span>
+  -H <span class="s2">"Authorization: myaccesstoken"</span>
+</pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="err">]</span><span class="w">
+</span></pre>
+
+<p>This endpoint sends the reminder straight away and also has the option
+to cancel it too.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;/send_now.json?cancel=true&amp;access_token=myaccesstoken</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>cancel</td>
+<td>false</td>
+<td>a boolean field which indicates whether you would like to cancel the reminder at the time of sending.</td>
+</tr>
+</tbody></table>
+
+<h2 id="snooze-a-reminder">Snooze a Reminder</h2>
+<pre class="highlight shell">curl
+<span class="s2">"https://followup.cc/api/v1/reminders/1/snooze.json?seconds=60&amp;access_token=blah"</span>
+  -H <span class="s2">"Authorization: myaccesstoken"</span>
+</pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="err">]</span><span class="w">
+</span></pre>
+
+<p>This endpoint snoozes a reminder for a given time period.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;/snooze.json?seconds=60&amp;access_token=myaccesstoken</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>seconds</td>
+<td>0</td>
+<td>an integer representing how many seconds you would like the reminder snoozed for.</td>
+</tr>
+</tbody></table>
+
+<h2 id="cancel-a-reminder">Cancel a Reminder</h2>
+<pre class="highlight shell">curl
+<span class="s2">"https://followup.cc/api/v1/reminders/1.json?access_token=blah"</span>
+  -H <span class="s2">"Authorization: myaccesstoken"</span>
+</pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="err">]</span><span class="w">
+</span></pre>
+
+<p>This endpoint cancels the remidner.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;.json?access_token=myaccesstoken</code></p>
 
           <h1 id="errors">Errors</h1>
 
