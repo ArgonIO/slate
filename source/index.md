@@ -45,7 +45,7 @@ $ curl -i https://followup.cc/oauth/token \
 > To retreive a new access token after it has expired, use this code:
 
 ```shell
-$ curl -i http://localhost:5000/oauth/token \
+$ curl -i http://followup.cc/oauth/token \
 -F grant_type=refresh_token \
 -F client_id="<yourclientid>" \
 -F client_secret="<yourclientsecret>" \
