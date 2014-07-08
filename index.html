@@ -44,22 +44,55 @@
 <h1 id="authentication">Authentication</h1>
 
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>To retreive an access token, use this code:</p>
 </blockquote>
-<pre class="highlight shell"><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: myaccesstoken"</span>
+<pre class="highlight shell"><span class="gp">$ </span>curl -i https://followup.cc/oauth/token <span class="se">\</span>
+-F <span class="nv">grant_type</span><span class="o">=</span>password <span class="se">\</span>
+-F <span class="nv">client_id</span><span class="o">=</span><span class="s2">"&lt;yourclientid&gt;"</span> <span class="se">\</span>
+-F <span class="nv">client_secret</span><span class="o">=</span><span class="s2">"&lt;yourclientsecret&gt;"</span> <span class="se">\</span>
+-F <span class="nv">username</span><span class="o">=</span>&lt;youremailaddress&gt;<span class="se">\</span>
+-F <span class="nv">password</span><span class="o">=</span>&lt;yourpassword&gt;
 </pre>
 
 <blockquote>
-<p>Make sure to replace <code class="prettyprint">myaccesstoken</code> with your API key.</p>
+<p>The above command returns JSON structured like this:</p>
 </blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"access_token"</span><span class="p">:</span><span class="s2">"&lt;youraccesstoken&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"token_type"</span><span class="p">:</span><span class="s2">"bearer"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expires_in"</span><span class="p">:</span><span class="mi">7200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"refresh_token"</span><span class="p">:</span><span class="s2">"&lt;yourrefreshtoken&gt;"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<blockquote>
+<p>To retreive a new access token after it has expired, use this code:</p>
+</blockquote>
+<pre class="highlight shell"><span class="gp">$ </span>curl -i http://localhost:5000/oauth/token <span class="se">\</span>
+-F <span class="nv">grant_type</span><span class="o">=</span>refresh_token <span class="se">\</span>
+-F <span class="nv">client_id</span><span class="o">=</span><span class="s2">"&lt;yourclientid&gt;"</span> <span class="se">\</span>
+-F <span class="nv">client_secret</span><span class="o">=</span><span class="s2">"&lt;yourclientsecret&gt;"</span> <span class="se">\</span>
+-F <span class="nv">refresh_token</span><span class="o">=</span><span class="s2">"&lt;yourrefreshtoken&gt;"</span>
+</pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"access_token"</span><span class="p">:</span><span class="s2">"&lt;yournewaccesstoken&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"token_type"</span><span class="p">:</span><span class="s2">"bearer"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expires_in"</span><span class="p">:</span><span class="mi">7200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"refresh_token"</span><span class="p">:</span><span class="s2">"&lt;yournewrefreshtoken&gt;"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
 
 <p>FollowUp uses Oauth access tokens to allow access to the API. You can register a new FollowUp API application <a href="https://followup.cc/api_applications/new">here</a>.</p>
 
 <p>FollowUp expects for the access token key to be included in all API requests that looks like the following:</p>
 
-<p><code class="prettyprint">Authorization: myaccesstoken</code></p>
+<p><code class="prettyprint">https://api.followup.cc/users/current.json?access_token=myaccesstoken</code></p>
+
+<p>Access tokens expire 2 hours after creation. New Access tokens can be obtained using refresh tokens which is detailed in the CURL example to the right.</p>
 
 <p><aside class="notice">
 You must replace <code class="prettyprint">myaccesstoken</code> with your access token.
@@ -67,7 +100,7 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 
 <h1 id="reminders">Reminders</h1>
 
-<h2 id="reminder-object">Reminder Object</h2>
+<h2 id="reminder-object">Reminder object</h2>
 
 <p>A reminder object has the following fields:</p>
 
@@ -150,8 +183,8 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 </tr>
 </tbody></table>
 
-<h2 id="get-all-reminders">Get All Reminders</h2>
-<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://followup.cc/api/v1/reminders.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+<h2 id="get-all-reminders">Get all reminders</h2>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/reminders.json?access_token=myaccesstoken&amp;scope[]=past&amp;scope[]=cancelled&amp;email=stu@argon.io"</span> <span class="se">\</span>
 -H <span class="s1">'Accept:application/json'</span>
 </pre>
 
@@ -169,21 +202,21 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
   </span><span class="s2">"reminders"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
       </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Boom?"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a test reminder"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1day@followup.cc"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
       </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
       </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404685631</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404685589</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709308</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709358</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404795791</span><span class="p">,</span><span class="w">
       </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404685634</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
       </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
         </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
         </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
@@ -198,24 +231,27 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://followup.cc/api/v1/reminders.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">GET https://api.followup.cc/v1/reminders.json?access_token=myaccesstoken</code></p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
+<th>Type</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>email</td>
+<td>string</td>
 <td>false</td>
 <td>If set the result will only include reminders for the given email.</td>
 </tr>
 <tr>
 <td>scope</td>
+<td>array</td>
 <td>false</td>
 <td>Pass a given scope to filter your reminders.</td>
 </tr>
@@ -285,9 +321,9 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 </tr>
 </tbody></table>
 
-<h2 id="get-a-specific-reminder">Get a Specific Reminder</h2>
-<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders/&lt;ID&gt;.json?access_token=myaccesstoken"</span>
-  -H <span class="s2">"Authorization: myaccesstoken"</span>
+<h2 id="get-a-specific-reminder">Get a specific reminder</h2>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/reminders/1.json?access_token=myaccesstoken"</span>
+-H <span class="s1">'Accept:application/json'</span>
 </pre>
 
 <blockquote>
@@ -295,20 +331,26 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 </blockquote>
 <pre class="highlight json"><span class="p">{</span><span class="w">
   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a test reminder"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1day@followup.cc"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
   </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+  </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709308</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709358</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404795791</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393200248</span><span class="w">
+  </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></pre>
 
@@ -316,173 +358,197 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://followup.cc/api/v1/reminders/&lt;ID&gt;.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">GET https://api.followup.cc/v1/reminders/1.json?access_token=myaccesstoken</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>ID</td>
+<td>true</td>
 <td>The ID of the reminder to retrieve</td>
 </tr>
 </tbody></table>
 
-<h2 id="create-a-reminder">Create a Reminder</h2>
-<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders.json"</span>
-  -H <span class="s2">"Authorization: myaccesstoken"</span>
+<h2 id="create-a-reminder">Create a reminder</h2>
+<pre class="highlight shell">curl
+<span class="s2">"https://api.followup.cc/v1/reminders.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  -H <span class="s1">'Accept:application/json'</span>
 </pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="err">]</span><span class="w">
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"header"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"Content-Type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text/json"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Content-Length"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"chunked"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"writer"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"block"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"body"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"Reminder queued"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></pre>
 
 <p>This endpoint creates a reminder associated with your account.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://followup.cc/api/v1/reminders.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">POST https://api.followup.cc/v1/reminders.json?access_token=myaccesstoken</code></p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
+<th>Type</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>to</td>
+<td>string</td>
 <td>true</td>
 <td>The action to set a reminder with followup eg <code class="prettyprint">1day@followup.cc</code>.</td>
 </tr>
 <tr>
 <td>subject</td>
+<td>string</td>
 <td>true</td>
 <td>The subject of the email.</td>
 </tr>
 <tr>
 <td>body</td>
+<td>string</td>
 <td>true</td>
 <td>The body of the email.</td>
 </tr>
 <tr>
 <td>from</td>
+<td>string</td>
 <td>true</td>
 <td>Which email you want to send the reminder from.</td>
 </tr>
 </tbody></table>
 
-<h2 id="reschedule-a-reminder">Reschedule a Reminder</h2>
-<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders/1/reschedule.json"</span>
-  -H <span class="s2">"Authorization: myaccesstoken"</span>
+<h2 id="reschedule-a-reminder">Reschedule a reminder</h2>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/reminders/1/reschedule.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+-X PUT <span class="se">\</span>
+-H <span class="s1">'Accept:application/json'</span> <span class="se">\</span>
+-H <span class="s1">'Content-Type:application/json'</span> -d<span class="s1">'
+{
+  "starts_at": 1404706692
+}'</span>
 </pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a test reminder"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1day@followup.cc"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709308</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709358</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404706692</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393200248</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="err">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></pre>
 
 <p>This endpoint creates a reminder associated with your account.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;/reschedule.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">PUT https://api.followup.cc/v1/reminders/1/reschedule.json?access_token=myaccesstoken</code></p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
+<th>Type</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>starts_at</td>
+<td>timestamp</td>
 <td>true</td>
 <td>The time the reminder will send as a UTC Unix timestamp.</td>
 </tr>
 </tbody></table>
 
-<h2 id="update-a-reminder&#39;s-recipient">Update a Reminder&rsquo;s Recipient</h2>
-<pre class="highlight shell">curl <span class="s2">"https://followup.cc/api/v1/reminders/1/update_recipient.json"</span>
-  -H <span class="s2">"Authorization: myaccesstoken"</span>
+<h2 id="update-a-reminder&#39;s-recipient">Update a reminder&rsquo;s recipient</h2>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/reminders/1/update_recipient.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+-X PUT <span class="se">\</span>
+-H <span class="s1">'Accept:application/json'</span> <span class="se">\</span>
+-H <span class="s1">'Content-Type:application/json'</span> -d<span class="s1">'
+{
+  "email": stuartdoe@gmail.com
+}'</span>
 </pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a test reminder"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1day@followup.cc"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartdoe@gmail"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709308</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709358</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404795791</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartdoe@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393200398</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="err">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></pre>
 
-<p>This endpoint updates the recipient of the reminder.</p>
+<p>This endpoint updates the recipient of the reminder. </p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;/update_recipient.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">PUT https://api.followup.cc/v1/reminders/1/update_recipient.json?access_token=myaccesstoken</code></p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
@@ -496,12 +562,13 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 <tr>
 <td>email</td>
 <td>true</td>
-<td>The email address of the new recipient.</td>
+<td>The email address of the new recipient. This email address must be an email address from your account.</td>
 </tr>
 </tbody></table>
 
-<h2 id="send-the-reminder-now">Send the Reminder Now</h2>
-<pre class="highlight shell"> <span class="nv">$ </span>curl <span class="s2">"https://followup.cc/api/v1/reminders/1/send_now.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+<h2 id="send-the-reminder-now">Send the reminder now</h2>
+<pre class="highlight shell"> <span class="nv">$ </span>curl <span class="s2">"https://api.followup.cc/v1/reminders/1/send_now.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+ -X PUT <span class="se">\</span>
  -H <span class="s1">'Accept:application/json'</span> <span class="se">\</span>
  -H <span class="s1">'Content-Type:application/json'</span> -d<span class="s1">'
  {
@@ -512,25 +579,29 @@ You must replace <code class="prettyprint">myaccesstoken</code> with your access
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a test reminder"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1day@followup.cc"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709308</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709358</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404795791</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393200248</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="err">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></pre>
 
 <p>This endpoint sends the reminder straight away and also has the option
@@ -538,7 +609,7 @@ to cancel it too.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;/send_now.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">PUT https://api.followup.cc/v1/reminders/1/send_now.json?access_token=myaccesstoken</code></p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
@@ -556,41 +627,49 @@ to cancel it too.</p>
 </tr>
 </tbody></table>
 
-<h2 id="snooze-a-reminder">Snooze a Reminder</h2>
-<pre class="highlight shell">curl
-<span class="s2">"https://followup.cc/api/v1/reminders/1/snooze.json?seconds=60&amp;access_token=blah"</span>
-  -H <span class="s2">"Authorization: myaccesstoken"</span>
+<h2 id="snooze-a-reminder">Snooze a reminder</h2>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/reminders/1/send_now.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+ -X PUT <span class="se">\</span>
+ -H <span class="s1">'Accept:application/json'</span> <span class="se">\</span>
+ -H <span class="s1">'Content-Type:application/json'</span> -d<span class="s1">'
+ {
+   "seconds": 1800
+ }'</span>
 </pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a test reminder"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1day@followup.cc"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709308</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709358</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404762736</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393200248</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="err">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></pre>
 
-<p>This endpoint snoozes a reminder for a given time period.</p>
+<p>This endpoint snoozes a reminder for a given time period. The current reminder will be expired and a new reminder will be created and returned.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;/snooze.json?seconds=60&amp;access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">PUT https://api.followup.cc/v1/reminders/1/snooze.json?access_token=myaccesstoken</code></p>
 
 <h3 id="query-parameters">Query Parameters</h3>
 
@@ -608,45 +687,50 @@ to cancel it too.</p>
 </tr>
 </tbody></table>
 
-<h2 id="cancel-a-reminder">Cancel a Reminder</h2>
-<pre class="highlight shell">curl
-<span class="s2">"https://followup.cc/api/v1/reminders/1.json?access_token=blah"</span>
-  -H <span class="s2">"Authorization: myaccesstoken"</span>
+<h2 id="cancel-a-reminder">Cancel a reminder</h2>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/reminders/1.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+ -X DELETE <span class="se">\</span>
+ -H <span class="s1">'Accept:application/json'</span> <span class="se">\</span>
+ -H <span class="s1">'Content-Type:application/json'</span>
 </pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Here's a test reminder"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1minute@followup.cc"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"in_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">nil</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391326015</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978619</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403978431</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979558</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1403979574</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="w">
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"subject"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a test reminder"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1day@followup.cc"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"action_method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"to"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"send_reminder_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"responded_to"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"is_recurring"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"repeat_interval"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"header_created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709308</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"was_scheduled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404709358</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"starts_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404795791</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"cancelled_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1404762901</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expired_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"user_email"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393200248</span><span class="w">
   </span><span class="p">}</span><span class="w">
-</span><span class="err">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></pre>
 
 <p>This endpoint cancels the remidner.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT https://followup.cc/api/v1/reminders/&lt;ID&gt;.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">PUT https://api.followup.cc/v1/reminders/1.json?access_token=myaccesstoken</code></p>
 
 <h1 id="users">Users</h1>
 
-<h2 id="user-object">User Object</h2>
+<h2 id="user-object">User object</h2>
 
 <p>A user object has the following fields:</p>
 
@@ -730,12 +814,12 @@ to cancel it too.</p>
 <tr>
 <td>created_at</td>
 <td>timestamp</td>
-<td>UTC Unix timestamp representation of when theuser was created</td>
+<td>UTC Unix timestamp representation of when the user was created</td>
 </tr>
 </tbody></table>
 
 <h2 id="get-the-current-user">Get the current user</h2>
-<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://followup.cc/api/v1/users/current.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/users/current.json?access_token=myaccesstoken"</span> <span class="se">\</span>
 -H <span class="s1">'Accept:application/json'</span>
 </pre>
 
@@ -744,7 +828,7 @@ to cancel it too.</p>
 </blockquote>
 <pre class="highlight json"><span class="p">{</span><span class="w">
   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"first_name"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
   </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
   </span><span class="s2">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pacific Time (US &amp; Canada)"</span><span class="p">,</span><span class="w">
@@ -765,11 +849,11 @@ to cancel it too.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://followup.cc/api/v1/users/current.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">GET https://api.followup.cc/v1/users/current.json?access_token=myaccesstoken</code></p>
 
 <h1 id="user-emails">User Emails</h1>
 
-<h2 id="user-email-object">User Email Object</h2>
+<h2 id="user-email-object">User email object</h2>
 
 <p>A user email object has the following fields:</p>
 
@@ -807,8 +891,8 @@ to cancel it too.</p>
 </tr>
 </tbody></table>
 
-<h2 id="get-all-user-emails">Get All User Emails</h2>
-<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://followup.cc/api/v1/user_emails.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+<h2 id="get-all-user-emails">Get all user emails</h2>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/user_emails.json?access_token=myaccesstoken"</span> <span class="se">\</span>
 -H <span class="s1">'Accept:application/json'</span>
 </pre>
 
@@ -826,7 +910,7 @@ to cancel it too.</p>
   </span><span class="s2">"user_emails"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
       </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
       </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
       </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
@@ -840,37 +924,94 @@ to cancel it too.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://followup.cc/api/v1/user_emails.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">GET https://api.followup.cc/v1/user_emails.json?access_token=myaccesstoken</code></p>
 
-<h2 id="get-a-specific-user-email">Get a Specific User Email</h2>
-<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://followup.cc/api/v1/user_emails/1.json?access_token=myaccesstoken"</span> <span class="se">\</span>
+<h2 id="get-a-specific-user-email">Get a specific user email</h2>
+<pre class="highlight shell"><span class="gp">$ </span>curl <span class="s2">"https://api.followup.cc/v1/user_emails/1.json?access_token=myaccesstoken"</span> <span class="se">\</span>
 -H <span class="s1">'Accept:application/json'</span>
 </pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json"><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stuartchaney22@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393200248</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stu@argon.io"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"is_primary"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"is_confirmed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1393200248</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></pre>
 
 <p>This endpoint retrieves details of a specific user email.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://followup.cc/api/v1/user_emails/1.json?access_token=myaccesstoken</code></p>
+<p><code class="prettyprint">GET https://api.followup.cc/v1/user_emails/1.json?access_token=myaccesstoken</code></p>
 
           <h1 id="errors">Errors</h1>
 
-<p><aside class="notice">This error section is stored in a separate file in <code class="prettyprint">includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the <code class="prettyprint">includes</code> folder and add them to the top of your <code class="prettyprint">index.md</code>&rsquo;s frontmatter. Files are included in the order listed.</aside></p>
+<h2 id="error-object">Error object</h2>
 
-<p>The Reminder API uses the following error codes:</p>
+<p>The API returns an error list comprised of the following:</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type</td>
+<td>error.list</td>
+</tr>
+<tr>
+<td>errors</td>
+<td>an array of errors</td>
+</tr>
+</tbody></table>
+
+<h3 id="error-object-attributes">ERROR OBJECT ATTRIBUTES</h3>
+
+<blockquote>
+<p>Erorr lists returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error_list"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"missing_param"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"seconds is missing"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"seconds"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p>Each Error Object has the following attributes</p>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>code</td>
+<td>A string indicating the kind of error, used to further qualify the HTTP response code</td>
+</tr>
+<tr>
+<td>message</td>
+<td>Optional. Human readable description of the error</td>
+</tr>
+<tr>
+<td>field</td>
+<td>Optional. Used to identify a particular field or query parameter that was in error.</td>
+</tr>
+</tbody></table>
+
+<h2 id="error-codes">Error codes</h2>
 
 <table><thead>
 <tr>
@@ -905,10 +1046,6 @@ to cancel it too.</p>
 <tr>
 <td>410</td>
 <td>Gone &ndash; The reminder requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
 </tr>
 <tr>
 <td>429</td>
