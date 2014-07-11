@@ -3,7 +3,7 @@ language_tabs:
   - shell
 
 toc_footers:
-  - <a href='#'>Sign Up for a FollowUp Account</a>
+  - <a href='https://followup.cc'>Sign Up for a FollowUp Account</a>
 
 includes:
   - errors
