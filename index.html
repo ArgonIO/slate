@@ -46,7 +46,14 @@
 <h1 id="authentication">Authentication</h1>
 
 <blockquote>
-<p>To retreive an access token, use this code:</p>
+<p>To retreive an access token using an API key, use this code:</p>
+</blockquote>
+<pre class="highlight shell"><span class="gp">$ </span>curl -i https://api.followup.cc/users/current.json?api_key<span class="o">=</span>myapikey <span class="se">\</span>
+-H <span class="s1">'Accept:application/json'</span>
+</pre>
+
+<blockquote>
+<p>To retreive an access token using oauth, use this code:</p>
 </blockquote>
 <pre class="highlight shell"><span class="gp">$ </span>curl -i https://followup.cc/oauth/token <span class="se">\</span>
 -F <span class="nv">grant_type</span><span class="o">=</span>password <span class="se">\</span>
@@ -88,7 +95,21 @@
 </span><span class="p">}</span><span class="w">
 </span></pre>
 
-<p>FollowUp uses Oauth access tokens to allow access to the API. You can register a new FollowUp API application <a href="https://followup.cc/api_applications/new">here</a>.</p>
+<p>FollowUp provides two methods of accesing the API, via an API key or Oauth access token.</p>
+
+<h3 id="api-keys">API Keys</h3>
+
+<p>We recommend this option if you only need to access your own account.</p>
+
+<p>API keys are available <a href="https://followup.cc/api">here</a>.</p>
+
+<p>FollowUp expects for the api key to be included in all API requests that looks like the following:</p>
+
+<p><code class="prettyprint">https://api.followup.cc/users/current.json?api_key=myapikey</code></p>
+
+<h3 id="oauth">Oauth</h3>
+
+<p>We recommend this option if your application needs to access other user&rsquo;s accounts.</p>
 
 <p>FollowUp expects for the access token key to be included in all API requests that looks like the following:</p>
 
@@ -97,7 +118,8 @@
 <p>Access tokens expire 2 hours after creation. New Access tokens can be obtained using refresh tokens which is detailed in the CURL example to the right.</p>
 
 <p><aside class="notice">
-You must replace <code class="prettyprint">myaccesstoken</code> with your access token.
+You must replace <code class="prettyprint">myaccesstoken</code> and <code class="prettyprint">myapikey</code> with your access token
+or api key.
 </aside></p>
 
 <h1 id="reminders">Reminders</h1>
