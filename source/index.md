@@ -120,6 +120,11 @@ starts_at | timestamp | UTC Unix timestamp representation of when the reminder s
 cancelled_at | timestamp | UTC Unix timestamp representation of when the reminder was cancelled
 expired_at | timestamp | UTC Unix timestamp representation of when the reminder expired
 user_email | hash | Hash of the user email who the reminder belongs to 
+to_addresses | array | List of addresses present in 'to' field, when sending an email
+cc_addresses | array | List of addresses present in 'cc' field
+body_html | string | Content of the email, represented in html structure
+body_text | string | Content of the email, without html tags
+attachments | array | List of attachments. In order to download them, use links from reminder object, with current access token in params.
 
 
 ## Get all reminders
@@ -155,6 +160,17 @@ $ curl "https://api.followup.cc/v1/reminders.json?access_token=myaccesstoken&sco
       "starts_at": 1404795791,
       "cancelled_at": null,
       "expired_at": null,
+      "body_html": "<div dir=\"ltr\">message example</div>\r\n",
+      "body_text": "message example\r\n",
+      "to_addresses": ["1min@followup.cc"],
+      "cc_addresses": ["hello@example.cc"],
+      "attachments": [
+        {
+          "file_name": "panda.jpg",
+          "file_url": "https://api.followup.cc/v1/attachments/411861/panda.jpg",
+          "content_type": "image/jpeg"
+        }
+      ],
       "user_email": {
         "id": 34,
         "email": "stu@argon.io",
