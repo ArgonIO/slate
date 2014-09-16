@@ -208,7 +208,6 @@ past | Filter by past reminders
 future | Filter by future reminders
 recent | Filter by reminders from the past month
 expired | Filter by expired reminders
-unexpired | Filer by unexpired reminders
 cancelled | Filter by cancelled reminders
 uncancelled | Filter by reminders that have not been cancelled
 unscheduled | Filter by reminders that are yet to be scheduled
