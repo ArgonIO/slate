@@ -21,13 +21,6 @@ JSON will be returned in all responses from the API including errors. We current
 
 # Authentication
 
-> To retreive an access token using an API key, use this code:
-
-```shell
-$ curl -i https://api.followup.cc/users/current.json?api_key=myapikey \
--H 'Accept:application/json'
-```
-
 > To retreive an access token using oauth, use this code:
 
 ```shell
@@ -80,7 +73,7 @@ API keys are available [here](https://followup.cc/api).
 
 FollowUp expects for the api key to be included in all API requests that looks like the following:
 
-`https://api.followup.cc/users/current.json?api_key=myapikey`
+`https://api.followup.cc/v1/users/current.json?api_key=myapikey`
 
 
 ### Oauth
@@ -89,7 +82,7 @@ We recommend this option if your application needs to access other user's accoun
 
 FollowUp expects for the access token key to be included in all API requests that looks like the following:
 
-`https://api.followup.cc/users/current.json?access_token=myaccesstoken`
+`https://api.followup.cc/v1/users/current.json?access_token=myaccesstoken`
 
 Access tokens expire 2 hours after creation. New Access tokens can be obtained using refresh tokens which is detailed in the CURL example to the right.
 
