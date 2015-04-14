@@ -21,13 +21,6 @@ JSON will be returned in all responses from the API including errors. We current
 
 # Authentication
 
-> To retreive an access token using an API key, use this code:
-
-```shell
-$ curl -i https://api.followup.cc/users/current.json?api_key=myapikey \
--H 'Accept:application/json'
-```
-
 > To retreive an access token using oauth, use this code:
 
 ```shell
