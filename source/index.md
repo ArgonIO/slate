@@ -80,7 +80,7 @@ API keys are available [here](https://followup.cc/api).
 
 FollowUp expects for the api key to be included in all API requests that looks like the following:
 
-`https://api.followup.cc/users/current.json?api_key=myapikey`
+`https://api.followup.cc/v1/users/current.json?api_key=myapikey`
 
 
 ### Oauth
@@ -89,7 +89,7 @@ We recommend this option if your application needs to access other user's accoun
 
 FollowUp expects for the access token key to be included in all API requests that looks like the following:
 
-`https://api.followup.cc/users/current.json?access_token=myaccesstoken`
+`https://api.followup.cc/v1/users/current.json?access_token=myaccesstoken`
 
 Access tokens expire 2 hours after creation. New Access tokens can be obtained using refresh tokens which is detailed in the CURL example to the right.
 
